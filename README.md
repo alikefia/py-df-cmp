@@ -52,9 +52,9 @@ implementation (not a full sort of the result)
 ```
 $ just data-dl-all
 $ poetry install
-$ ./main pandas top-flop "*"
-$ ./main dask top-flop "*"
-$ ./main polars top-flop "*"
+$ ./main.py pandas top-flop "*"
+$ ./main.py dask top-flop "*"
+$ ./main.py polars top-flop "*"
 ```
 
 ## Results
