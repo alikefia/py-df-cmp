@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "data-py-bench"
+version = "0.1.0"
+description = "Data tools benchmark"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+typer = "^0.7.0"
+polars = "^0.15.16"
+dask = {extras = ["complete"], version = "^2023.1.0"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,7 @@
+/.direnv
+/.local.envrc
+/data
+
+__pycache__
+*.pyc
+*.csv
