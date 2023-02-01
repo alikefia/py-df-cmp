@@ -46,6 +46,17 @@ The objective is to list zipcodes with most and least transactions number
 during all the period (9 years in my case). Dask approach is different in the
 implementation (not a full sort of the result)
 
+
+## How to run
+
+```
+$ just data-dl-all
+$ poetry install
+$ ./main pandas top-flop "*"
+$ ./main dask top-flop "*"
+$ ./main polars top-flop "*"
+```
+
 ## Results
 
 The tests have been executed on a Macbook Pro with the following configuration
