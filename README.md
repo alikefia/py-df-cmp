@@ -1,5 +1,8 @@
 # Python Dataframe libraries comparison
 
+*Avoiding the word benchmark here since the work is not following any strict
+methodology*
+
 ## TL;DR
 
 ![Results](./img/results.png)
@@ -10,9 +13,6 @@ Arrow](https://arrow.apache.org) format in Machine Learning libraries APIs
 would be a nice move to improve interoperability and efficiency.
 
 ## Context and approach
-
-*Avoiding the word benchmark here since the work is not following any strict
-methodology*
 
 Pandas library is the "defacto" choice for any data engineer / scientist when
 building data projects in Python. It is relying on Numpy Array structure which
