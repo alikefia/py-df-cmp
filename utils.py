@@ -1,10 +1,13 @@
 import csv
+import logging
 import os
 import resource
 from collections import namedtuple
 from datetime import datetime
 from functools import wraps
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 cols = {
     "id_mutation": "str",
@@ -50,32 +53,28 @@ cols = {
 }
 
 
-Experience = namedtuple(
-    "Experience", ("mod", "fn", "ctx", "tm", "u_cpu", "s_cpu", "max_mem")
-)
+XP = namedtuple("XP", ("mod", "fn", "ctx", "tm", "u_cpu", "s_cpu", "max_mem"))
 
 
-def print_stats(e: Experience):
-    print(
-        f"""
-Resources usage:
-- exec time     : {e.tm}s
-- user cpu time : {e.u_cpu}s
-- sys cpu time  : {e.s_cpu}s
-- max mem usage : {e.max_mem}GB
-        """
-    )
-
-
-def log_stats(e: Experience):
+def log(xp):
     new = False
     if not Path(os.environ["RES"]).exists():
         new = True
     with open(os.environ["RES"], "a") as fd:
         writer = csv.writer(fd)
         if new is True:
-            writer.writerow(Experience._fields)
-        writer.writerow((e.mod, e.fn, e.ctx, e.tm, e.u_cpu, e.s_cpu, e.max_mem))
+            writer.writerow(XP._fields)
+        writer.writerow(
+            (
+                xp.mod,
+                xp.fn,
+                xp.ctx,
+                xp.tm,
+                xp.u_cpu,
+                xp.s_cpu,
+                xp.max_mem,
+            )
+        )
 
 
 def with_res_logger(f):
@@ -86,7 +85,7 @@ def with_res_logger(f):
         end = datetime.now()
         me = resource.getrusage(resource.RUSAGE_SELF)
         children = resource.getrusage(resource.RUSAGE_CHILDREN)
-        e = Experience(
+        xp = XP(
             tm=f"{(end - start).total_seconds():.2f}",
             mod=f.__module__,
             fn=f.__name__,
@@ -97,8 +96,8 @@ def with_res_logger(f):
             s_cpu=f"{me.ru_stime + children.ru_stime:.2f}",
             max_mem=f"{(me.ru_maxrss + children.ru_maxrss)/(1024*1024*1024):.2f}",
         )
-        log_stats(e)
-        print_stats(e)
+        log(xp)
+        logger.info(xp)
         return res
 
     return wrapper
