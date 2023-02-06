@@ -14,6 +14,7 @@ if log_level is not None:
 import typer  # noqa: E402
 
 from app_dask import app as dask_app  # noqa: E402
+from app_duckdb import app as duckdb_app  # noqa: E402
 from app_explore import app as explore_app  # noqa: E402
 from app_pandas import app as pandas_app  # noqa: E402
 from app_polars import app as polars_app  # noqa: E402
@@ -38,9 +39,10 @@ def wait(secs: int):
 
 
 app.add_typer(explore_app, name="explore")
-app.add_typer(polars_app, name="polars")
-app.add_typer(dask_app, name="dask")
 app.add_typer(pandas_app, name="pandas")
+app.add_typer(dask_app, name="dask")
+app.add_typer(polars_app, name="polars")
+app.add_typer(duckdb_app, name="duckdb")
 
 
 if __name__ == "__main__":
