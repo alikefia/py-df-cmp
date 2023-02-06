@@ -90,7 +90,8 @@ def with_res_logger(f):
             mod=f.__module__,
             fn=f.__name__,
             ctx="|".join(
-                [str(arg) for arg in args] + [str(kwarg) for kwarg in kwargs.values()]
+                [str(arg) for arg in args if arg is not None]
+                + [str(kwarg) for kwarg in kwargs.values() if kwarg is not None]
             ),
             u_cpu=f"{me.ru_utime + children.ru_utime:.2f}",
             s_cpu=f"{me.ru_stime + children.ru_stime:.2f}",
