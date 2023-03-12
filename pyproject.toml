@@ -11,6 +11,7 @@ typer = "^0.7.0"
 polars = "^0.15.16"
 dask = {extras = ["complete"], version = "^2023.1.0"}
 duckdb = "^0.6.1"
+modin = {extras = ["ray"], version = "^0.19.0"}
 
 
 [build-system]

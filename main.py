@@ -16,6 +16,7 @@ import typer  # noqa: E402
 from app_dask import app as dask_app  # noqa: E402
 from app_duckdb import app as duckdb_app  # noqa: E402
 from app_explore import app as explore_app  # noqa: E402
+from app_modin import app as modin_app  # noqa: E402
 from app_pandas import app as pandas_app  # noqa: E402
 from app_polars import app as polars_app  # noqa: E402
 from utils import with_res_logger  # noqa: E402
@@ -43,6 +44,7 @@ app.add_typer(pandas_app, name="pandas")
 app.add_typer(dask_app, name="dask")
 app.add_typer(polars_app, name="polars")
 app.add_typer(duckdb_app, name="duckdb")
+app.add_typer(modin_app, name="modin")
 
 
 if __name__ == "__main__":
