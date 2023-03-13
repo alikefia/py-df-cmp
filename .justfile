@@ -8,7 +8,7 @@
     just --unstable --fmt
     isort *.py
     black *.py
-    flake8 *.py
+    ruff check *.py
 
 # download data (for one year)
 @data-dl year:
