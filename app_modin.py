@@ -1,13 +1,11 @@
 import glob
-import json
 import os
 from pathlib import Path
 
 import modin.pandas as pd
-import ray
 import typer
 
-from utils import cols, with_res_logger
+from utils import cols, ray_init, with_res_logger
 
 app = typer.Typer()
 
@@ -35,23 +33,8 @@ def load(year, nrows):
 
 @app.command()
 @with_res_logger
+@ray_init
 def top_flop(year: str, nrows: int = None):
-    ray.init(
-        _system_config={
-            # Allow spilling until the local disk is 99% utilized.
-            # This only affects spilling to the local file system.
-            "local_fs_capacity_threshold": 0.99,
-            "object_spilling_config": json.dumps(
-                {
-                    "type": "filesystem",
-                    "params": {
-                        "directory_path": "/tmp/spill",
-                        "buffer_size": 1_000_000,
-                    },
-                }
-            ),
-        },
-    )
     serie = (
         load(year, nrows)
         .groupby(["code_postal"])["id_mutation"]
