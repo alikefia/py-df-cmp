@@ -1,4 +1,5 @@
 import csv
+import json
 import logging
 import os
 import resource
@@ -6,6 +7,8 @@ from collections import namedtuple
 from datetime import datetime
 from functools import wraps
 from pathlib import Path
+
+import ray
 
 logger = logging.getLogger(__name__)
 
@@ -100,5 +103,29 @@ def with_res_logger(f):
         log(xp)
         logger.info(xp)
         return res
+
+    return wrapper
+
+
+def ray_init(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        ray.init(
+            _system_config={
+                # Allow spilling until the local disk is 99% utilized.
+                # This only affects spilling to the local file system.
+                "local_fs_capacity_threshold": 0.99,
+                "object_spilling_config": json.dumps(
+                    {
+                        "type": "filesystem",
+                        "params": {
+                            "directory_path": "/tmp/spill",
+                            "buffer_size": 1_000_000,
+                        },
+                    }
+                ),
+            },
+        )
+        f(*args, **kwargs)
 
     return wrapper
