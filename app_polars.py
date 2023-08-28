@@ -36,7 +36,7 @@ def top_flop(year: str, nrows: int = None):
         .select(["code_postal", "id_mutation"])
         .groupby("code_postal")
         .agg([pl.n_unique("id_mutation")])
-        .sort("id_mutation", reverse=True)
+        .sort("id_mutation", descending=True)
         .collect()
     )
     print(df[:10])
